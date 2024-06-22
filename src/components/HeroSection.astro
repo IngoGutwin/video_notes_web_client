@@ -1,0 +1,52 @@
+---
+interface ImageProps {
+  id?: number;
+  url?: string;
+  alternativeText?: string;
+}
+interface Link {
+  id: number;
+  url: string;
+  label: string;
+}
+interface HeroSectionProps {
+  data: {
+    id?: number;
+    _component?: string;
+    title?: string;
+    description?: string;
+    image?: ImageProps;
+    links?: Link
+  };
+}
+const { blocks } = Astro.props;
+const strapiURL = import.meta.env.STRAPI_API;
+const images = {
+  sm: blocks.cover.data[0],
+  xl: blocks.cover.data[1],
+}
+---
+
+<header class="relative h-screen overflow-hidden">
+  <img
+    alt="Background"
+    class="absolute inset-0 bg-cover object-cover w-full h-full"
+    src={`${strapiURL}${images.xl.url}`}
+  />
+  <div
+    class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-black bg-opacity-20"
+  >
+    <h1 class="text-4xl font-bold md:text-5xl lg:text-6xl">
+      {blocks.heading}
+    </h1>
+    <p class="mt-4 text-lg md:text-xl lg:text-2xl">
+      {blocks.subheading}
+    </p>
+    <a
+      class="mt-8 inline-flex items-center justify-center px-6 py-3 text-base font-medium text-black bg-white rounded-md shadow hover:bg-gray-100"
+      href={blocks.link.url}
+    >
+      Login
+    </a>
+  </div>
+</header>
